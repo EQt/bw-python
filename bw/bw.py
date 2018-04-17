@@ -44,6 +44,12 @@ class BigWig(object):
     def close(self):
         return lib.bwClose(self.bw)
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        return self.close()
+
     @property
     def chroms(self):
         seqs = self.bw.cl
