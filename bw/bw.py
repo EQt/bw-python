@@ -99,6 +99,11 @@ class BigWig(object):
             return a[0]
         return a
 
+
+def open(fname, mode="r"):
+    return BigWig(fname)
+
+
 if __name__ == "__main__":
     import doctest
     import sys

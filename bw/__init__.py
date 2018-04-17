@@ -1,4 +1,4 @@
-from .bw import BigWig
+from .bw import BigWig, open
 
 __version__ = "0.0.2"
 
