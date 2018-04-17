@@ -85,6 +85,8 @@ uint32_t bwGetTid(bigWigFile_t *fp, char *chrom);
 
 void free(void *);
 
+bwOverlappingIntervals_t *bwGetOverlappingIntervals(bigWigFile_t *fp, char *chrom, uint32_t start, uint32_t end);
+
 \n""")
 
 

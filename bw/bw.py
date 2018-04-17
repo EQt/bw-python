@@ -70,6 +70,20 @@ class BigWig(object):
         lib.bwDestroyOverlappingIntervals(intervals)
         return a
 
+    def intervals(self, chrom, start=0, end=-1, includeNA=True):
+        if end == -1:
+            chroms = dict(self.chroms)
+            end = chroms[chrom] - 1
+        intervals = lib.bwGetOverlappingIntervals(self.bw, chrom.encode(), start, end)
+        value = array.array('f')
+        start = array.array('I')
+        end = array.array('I')
+        if intervals != ffi.NULL and intervals.l != 0:
+            value.frombytes(ffi.buffer(intervals.value[0:intervals.l]))
+            start.frombytes(ffi.buffer(intervals.start[0:intervals.l]))
+            end.frombytes(ffi.buffer(intervals.end[0:intervals.l]))
+        lib.bwDestroyOverlappingIntervals(intervals)
+        return start, end, value
 
     def stats(self, chrom, start, end, stat="mean", nBins=1):
         ops = ("mean", "stdev", "max", "min", "coverage")
