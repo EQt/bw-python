@@ -38,7 +38,7 @@ class BigWig(object):
     """
 
     def __init__(self, path):
-        self.bw = lib.bwOpen(path.encode(), ffi.NULL, "r")
+        self.bw = lib.bwOpen(path.encode(), ffi.NULL, "r".encode())
         self.path = path
 
     def close(self):
