@@ -63,7 +63,7 @@ class BigWig(object):
         intervals = lib.bwGetValues(self.bw, chrom.encode(), start, end, int(includeNA))
         a = array.array('f')
         if intervals != ffi.NULL and intervals.l != 0:
-            a.fromstring(ffi.buffer(intervals.value[0:intervals.l]))
+            a.frombytes(ffi.buffer(intervals.value[0:intervals.l]))
         lib.bwDestroyOverlappingIntervals(intervals)
         return a
 
