@@ -1,5 +1,6 @@
 from ._bigwig import lib, ffi
 from collections import namedtuple
+import sys
 import array
 
 Interval = namedtuple('Interval', ['chrom', 'start', 'end', 'value'])
@@ -72,7 +73,10 @@ class BigWig(object):
         intervals = lib.bwGetValues(self.bw, chrom.encode(), start, end, int(includeNA))
         a = array.array('f')
         if intervals != ffi.NULL and intervals.l != 0:
-            a.frombytes(ffi.buffer(intervals.value[0:intervals.l]))
+            if sys.version_info >= (3, 2):
+                a.frombytes(ffi.buffer(intervals.value[0:intervals.l]))
+            else:
+                a.fromstring(ffi.buffer(intervals.value[0:intervals.l]))
         lib.bwDestroyOverlappingIntervals(intervals)
         return a
 
