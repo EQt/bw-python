@@ -12,7 +12,7 @@ p = subprocess.Popen("curl-config --prefix",
                      stdout=subprocess.PIPE,
                      shell=True)
 prefix = p.stdout.read().strip()
-err = p.stderr.read().strip()
+err = p.stderr.read().decode().strip()
 if err:
     sys.stdout.write(err)
 
