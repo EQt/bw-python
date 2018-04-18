@@ -5,6 +5,16 @@ Python wrapper to [Devon Ryan's bigwig library](https://github.com/dpryan79/libB
 It is licensed under MIT (see [LICENSE](./LICENSE)).
 
 
+Installation
+-----------
+
+Currently you will need `libcurl` to be installed.
+To compile the source files type (to use from this directory)
+```bash
+python setup.py develop
+```
+
+
 Example
 ------
 
