@@ -1,11 +1,11 @@
 language: python
 python:
-  - 2.7
-  - 3.6
+  - "3.6"
 addons:
   apt:
     packages:
       - gcc
+      - python3-dev
 install:
   - python setup.py develop
 script:
