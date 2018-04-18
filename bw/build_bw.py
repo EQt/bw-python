@@ -4,18 +4,30 @@ import subprocess
 import os.path as op
 import os
 from cffi import FFI
+from distutils.ccompiler import gen_preprocess_options, show_compilers
+
+
+def find_curl():
+    """Return prefix to libcurl (or None if not found)"""
+    p = subprocess.Popen("curl-config --prefix",
+                         stderr=subprocess.PIPE,
+                         stdout=subprocess.PIPE,
+                         shell=True)
+    prefix = p.stdout.read().strip()
+    err = p.stderr.read().decode().strip()
+    if err:
+        sys.stdout.write(err)
+        sys.stdout.write('\n')
+        return prefix
+    return None
 
 
 HERE = op.dirname(op.abspath(op.dirname(__file__))) or "."
-p = subprocess.Popen("curl-config --prefix",
-                     stderr=subprocess.PIPE,
-                     stdout=subprocess.PIPE,
-                     shell=True)
-prefix = p.stdout.read().strip()
-err = p.stderr.read().decode().strip()
-if err:
-    sys.stdout.write(err)
-
+compiler_args = []
+curl_prefix = find_curl()
+if not curl_prefix:
+    compiler_args += gen_preprocess_options(macros=[('NOCURL', 1)],
+                                            include_dirs=[])
 ffi = FFI()
 
 # include "curl/curl.h"
@@ -27,12 +39,17 @@ ffi.set_source("bw._bigwig", """
 #include "{path}/libBigWig/bigWig.h"
 #include <stdlib.h>
 """.format(path=HERE),
-               libraries=[] if os.name == 'nt' else ["c", "curl"],
+               libraries=["c", "curl"] if curl_prefix else [],
                sources=sources,
-               include_dirs=["/usr/local/include/", "%s/include/" % prefix],
-               extra_compile_args=['/DNOCURL'] if os.name == 'nt' else [])
+               include_dirs=["/usr/local/include/",
+                             "%s/include/" % curl_prefix if curl_prefix else ""],
+               extra_compile_args=compiler_args)
 
-ffi.cdef(open("{path}/bw/curl_constants.h".format(path=HERE)).read())
+if curl_prefix:
+    ffi.cdef(open("{path}/bw/curl_constants.h".format(path=HERE)).read())
+else:
+    ffi.cdef("typedef int CURLcode;")
+
 ffi.cdef("""
 typedef void CURL;
 
@@ -100,4 +117,5 @@ bwOverlappingIntervals_t *bwGetOverlappingIntervals(bigWigFile_t *fp,
 
 
 if __name__ == "__main__":
+    show_compilers()
     ffi.compile()
