@@ -26,7 +26,7 @@ HERE = op.dirname(op.abspath(op.dirname(__file__))) or "."
 compiler_args = []
 curl_prefix = find_curl()
 if not curl_prefix:
-    compiler_args += ['/NOCURL']
+    compiler_args += ['/DNOCURL']
 
 ffi = FFI()
 
