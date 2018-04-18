@@ -22,17 +22,15 @@ ffi = FFI()
 # include "{path}/bw/curl_constants.h"
 # include "{path}/libBigWig/bwValues.h"
 
-if os.name == 'nt':
-    ffi.cdef("#define NOCURL 1\n")
-
 sources = glob.glob("{path}/libBigWig/*.c".format(path=HERE))
 ffi.set_source("bw._bigwig", """
 #include "{path}/libBigWig/bigWig.h"
 #include <stdlib.h>
 """.format(path=HERE),
-    libraries=[] if os.name == 'nt' else ["c", "curl"],
-    sources=sources,
-    include_dirs=["/usr/local/include/", "%s/include/" % prefix])
+               libraries=[] if os.name == 'nt' else ["c", "curl"],
+               sources=sources,
+               include_dirs=["/usr/local/include/", "%s/include/" % prefix],
+               extra_compile_args=['/DNOCURL'] if os.name == 'nt' else [])
 
 ffi.cdef(open("{path}/bw/curl_constants.h".format(path=HERE)).read())
 ffi.cdef("""
