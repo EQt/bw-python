@@ -26,8 +26,8 @@ HERE = op.dirname(op.abspath(op.dirname(__file__))) or "."
 compiler_args = []
 curl_prefix = find_curl()
 if not curl_prefix:
-    compiler_args += gen_preprocess_options(macros=[('NOCURL', 1)],
-                                            include_dirs=[])
+    compiler_args += ['/NOCURL']
+
 ffi = FFI()
 
 # include "curl/curl.h"
