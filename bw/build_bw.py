@@ -2,6 +2,7 @@ import sys
 import glob
 import subprocess
 import os.path as op
+import os
 from cffi import FFI
 
 
@@ -20,6 +21,9 @@ ffi = FFI()
 # include "curl/curl.h"
 # include "{path}/bw/curl_constants.h"
 # include "{path}/libBigWig/bwValues.h"
+
+if os.name == 'nt':
+    ffi.cdef("#define NOCURL 1\n")
 
 sources = glob.glob("{path}/libBigWig/*.c".format(path=HERE))
 ffi.set_source("bw._bigwig", """
