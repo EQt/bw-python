@@ -2,6 +2,7 @@
 ==========
 
 Python wrapper to [Devon Ryan's bigwig library](https://github.com/dpryan79/libBigWig) using `cffi`.
+It is licensed under MIT (see [LICENSE](./LICENSE)).
 
 
 Example
