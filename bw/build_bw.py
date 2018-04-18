@@ -18,8 +18,8 @@ def find_curl():
     if err:
         sys.stdout.write(err)
         sys.stdout.write('\n')
-        return prefix
-    return None
+        return None
+    return prefix
 
 
 HERE = op.dirname(op.abspath(op.dirname(__file__))) or "."
