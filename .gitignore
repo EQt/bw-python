@@ -4,3 +4,5 @@ bw/_b*
 libBigWig/docs/
 build
 *.egg-info
+.eggs/
+dist/
