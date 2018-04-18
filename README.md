@@ -59,3 +59,10 @@ array('d', [1.0, 0.5])
 ```
 
 An `array.array` can be turned into a numpy array with `np.frombuffer(a, dtype='f')`
+
+
+Unit Tests
+---------
+
+The unit tests are located in the [`bw/tests/`](./bw/tests/) directory.
+You can run them via [`pytest`](https://docs.pytest.org/en/latest/).
