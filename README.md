@@ -1,4 +1,11 @@
-python wrapper to [Devon Ryan's bigwig library](https://github.com/dpryan79/libBigWig) using cffi
+`bw-python`
+==========
+
+Python wrapper to [Devon Ryan's bigwig library](https://github.com/dpryan79/libBigWig) using `cffi`.
+
+
+Example
+------
 
 ```Python
 >>> from bw import BigWig
@@ -40,4 +47,4 @@ array('d', [1.0, 0.5])
 >>> b.close()
 ```
 
-An array.array can be turned into a numpy array with `np.frombuffer(a, dtype='f')`
+An `array.array` can be turned into a numpy array with `np.frombuffer(a, dtype='f')`
