@@ -72,7 +72,6 @@ enum bwStatsType {
     doesNotExist = -1,
     mean = 0,
     average = 0,
-    std = 1,
     stdev = 1,
     dev = 1,
     max = 2,
