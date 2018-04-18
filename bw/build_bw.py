@@ -19,7 +19,6 @@ ffi = FFI()
 #include "curl/curl.h"
 
 sources = glob.glob("{path}/libBigWig/*.c".format(path=HERE))
-#print sources
 #include "{path}/bw/curl_constants.h"
 #include "{path}/libBigWig/bwValues.h"
 ffi.set_source("bw._bigwig", """
