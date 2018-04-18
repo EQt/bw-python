@@ -5,6 +5,9 @@ python:
 os:
   - linux
   - osx
+matrix:
+  allow_failures:
+    - os: osx
 install:
   - python setup.py develop
 script:
