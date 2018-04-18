@@ -1,6 +1,8 @@
 `bw-python`
 ==========
 
+[![Build Status](https://travis-ci.org/EQt/bw-python.svg?branch=master)](https://travis-ci.org/EQt/bw-python)
+
 Python wrapper to [Devon Ryan's bigwig library](https://github.com/dpryan79/libBigWig) using `cffi`.
 It is licensed under MIT (see [LICENSE](./LICENSE)).
 
