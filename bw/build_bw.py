@@ -1,13 +1,15 @@
 import sys
 import glob
+import subprocess
 import os.path as op
 from cffi import FFI
-import subprocess
+
 
 HERE = op.dirname(op.abspath(op.dirname(__file__))) or "."
-
-p = subprocess.Popen("curl-config --prefix", stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
-
+p = subprocess.Popen("curl-config --prefix",
+                     stderr=subprocess.PIPE,
+                     stdout=subprocess.PIPE,
+                     shell=True)
 prefix = p.stdout.read().strip()
 err = p.stderr.read().strip()
 if err:
@@ -15,19 +17,18 @@ if err:
 
 ffi = FFI()
 
-
-#include "curl/curl.h"
-#include "{path}/bw/curl_constants.h"
-#include "{path}/libBigWig/bwValues.h"
+# include "curl/curl.h"
+# include "{path}/bw/curl_constants.h"
+# include "{path}/libBigWig/bwValues.h"
 
 sources = glob.glob("{path}/libBigWig/*.c".format(path=HERE))
 ffi.set_source("bw._bigwig", """
 #include "{path}/libBigWig/bigWig.h"
 #include <stdlib.h>
 """.format(path=HERE),
-               libraries=["c", "curl"],
-               sources=sources,
-               include_dirs=["/usr/local/include/", "%s/include/" % prefix])
+    libraries=["c", "curl"],
+    sources=sources,
+    include_dirs=["/usr/local/include/", "%s/include/" % prefix])
 
 ffi.cdef(open("{path}/bw/curl_constants.h".format(path=HERE)).read())
 ffi.cdef("""
@@ -58,10 +59,13 @@ typedef struct {
 } bwOverlappingIntervals_t;
 
 
-bigWigFile_t *bwOpen(char *fname, CURLcode (*callBack)(CURL*), const char* mode);
+bigWigFile_t *bwOpen(char *fname, CURLcode (*callBack)(CURL*),
+                     const char* mode);
 void bwClose(bigWigFile_t *fp);
 
-bwOverlappingIntervals_t *bwGetValues(bigWigFile_t *fp, char *chrom, uint32_t start, uint32_t end, int includeNA);
+bwOverlappingIntervals_t *bwGetValues(bigWigFile_t *fp, char *chrom,
+                                      uint32_t start, uint32_t end,
+                                      int includeNA);
 void bwDestroyOverlappingIntervals(bwOverlappingIntervals_t *o);
 
 enum bwStatsType {
@@ -77,16 +81,21 @@ enum bwStatsType {
     coverage = 4,
 };
 
-double *bwStats(bigWigFile_t *fp, char *chrom, uint32_t start, uint32_t end, uint32_t nBins, enum bwStatsType type);
+double *bwStats(bigWigFile_t *fp, char *chrom, uint32_t start, uint32_t end,
+                uint32_t nBins,
+                enum bwStatsType type);
 
 
 uint32_t bwGetTid(bigWigFile_t *fp, char *chrom);
 
 void free(void *);
 
-bwOverlappingIntervals_t *bwGetOverlappingIntervals(bigWigFile_t *fp, char *chrom, uint32_t start, uint32_t end);
+bwOverlappingIntervals_t *bwGetOverlappingIntervals(bigWigFile_t *fp,
+                                                    char *chrom,
+                                                    uint32_t start,
+                                                    uint32_t end);
 
-\n""")
+""")
 
 
 if __name__ == "__main__":
