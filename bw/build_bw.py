@@ -30,7 +30,7 @@ ffi.set_source("bw._bigwig", """
 #include "{path}/libBigWig/bigWig.h"
 #include <stdlib.h>
 """.format(path=HERE),
-    libraries=["c", "curl"],
+    libraries=[] if os.name == 'nt' else ["c", "curl"],
     sources=sources,
     include_dirs=["/usr/local/include/", "%s/include/" % prefix])
 
